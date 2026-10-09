@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+html, body, #root { margin: 0; height: 100%; background: #05070d; color: #e6ebf5;
+  font-family: Inter, system-ui, sans-serif; overflow: hidden; }
+
+/* ── Панель настроек: токены темы (тёмная по умолчанию, светлая — data-theme="light") ── */
+.gv-ui {
+  --p-bg: rgba(13, 16, 26, 0.88);
+  --p-pop: rgb(20, 24, 36);
+  --p-border: rgba(255, 255, 255, 0.08);
+  --p-divider: rgba(255, 255, 255, 0.06);
+  --p-text: #e9edf5;
+  --p-muted: #9aa3b8;
+  --p-faint: #6b7489;
+  --p-ctl: rgba(255, 255, 255, 0.055);
+  --p-ctl-hover: rgba(255, 255, 255, 0.09);
+  --p-thumb: rgba(255, 255, 255, 0.16);
+  --p-thumb-shadow: 0 1px 2px rgba(0, 0, 0, 0.45), inset 0 0 0 0.5px rgba(255, 255, 255, 0.12);
+  --p-accent: #f6b84b;
+  --p-accent-strong: #ffc967;
+  --p-accent-fg: #1b1405;
+  --p-accent-soft: rgba(246, 184, 75, 0.13);
+  --p-shadow: 0 24px 60px -18px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: var(--p-text);
+  font-feature-settings: "cv11", "ss01", "tnum";
+}
+.gv-ui[data-theme="light"] {
+  --p-bg: rgba(255, 255, 255, 0.9);
+  --p-pop: #ffffff;
+  --p-border: rgba(15, 23, 42, 0.08);
+  --p-divider: rgba(15, 23, 42, 0.07);
+  --p-text: #0f172a;
+  --p-muted: #5a6478;
+  --p-faint: #94a0b4;
+  --p-ctl: rgba(15, 23, 42, 0.05);
+  --p-ctl-hover: rgba(15, 23, 42, 0.085);
+  --p-thumb: #ffffff;
+  --p-thumb-shadow: 0 1px 3px rgba(15, 23, 42, 0.16), 0 0 0 0.5px rgba(15, 23, 42, 0.08);
+  --p-accent: #d97a06;
+  --p-accent-strong: #b86404;
+  --p-accent-fg: #ffffff;
+  --p-accent-soft: rgba(217, 122, 6, 0.1);
+  --p-shadow: 0 24px 60px -20px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+.gv-panel {
+  background: var(--p-bg);
+  box-shadow: var(--p-shadow);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+}
+@media (max-width: 639px) { .gv-panel { --p-bg: rgba(13, 16, 26, 0.985); } .gv-panel[data-theme="light"] { --p-bg: rgba(255, 255, 255, 0.985); } }
+.gv-scroll { scrollbar-width: thin; scrollbar-color: var(--p-ctl-hover) transparent; }
+
+/* Ползунок: тонкая дорожка с заливкой до значения (--fill), круглый бегунок */
+.gv-range { -webkit-appearance: none; appearance: none; width: 100%; height: 18px; background: transparent; cursor: pointer; }
+.gv-range:disabled { cursor: default; opacity: 0.45; }
+.gv-range::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 99px;
+  background: linear-gradient(90deg, var(--p-accent) var(--fill, 0%), var(--p-ctl-hover) var(--fill, 0%));
+}
+.gv-range::-moz-range-track { height: 4px; border-radius: 99px; background: var(--p-ctl-hover); }
+.gv-range::-moz-range-progress { height: 4px; border-radius: 99px; background: var(--p-accent); }
+.gv-range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 0 3px var(--p-accent-soft), 0 1px 3px rgba(0, 0, 0, 0.4); transition: box-shadow 0.15s;
+}
+.gv-range::-moz-range-thumb { width: 14px; height: 14px; border: 0; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 0 3px var(--p-accent-soft), 0 1px 3px rgba(0, 0, 0, 0.4); }
+.gv-range:hover::-webkit-slider-thumb, .gv-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 5px var(--p-accent-soft), 0 1px 3px rgba(0, 0, 0, 0.4); }
+.gv-range:focus-visible { outline: none; }
+
+.gv-focus:focus-visible { outline: 2px solid var(--p-accent); outline-offset: 1px; }
+
+@keyframes gv-pop-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } to { opacity: 1; transform: none; } }
+.gv-pop { animation: gv-pop-in 0.12s ease-out; }

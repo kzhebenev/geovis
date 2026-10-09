@@ -1,0 +1,11 @@
+[project]
+name = "geovis-api"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115", "uvicorn[standard]", "pydantic>=2", "numpy", "mcp>=1.10", "httpx"]
+
+[dependency-groups]
+dev = ["pytest", "httpx"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

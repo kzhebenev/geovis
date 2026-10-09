@@ -1,0 +1,49 @@
+services:
+  geovis:
+    build: .
+    container_name: geovis
+    restart: unless-stopped
+    depends_on: [api]
+    ports:
+      # адрес и порт — из .env (по умолчанию только localhost; наружу — через свой reverse proxy)
+      - "${GEOVIS_BIND:-127.0.0.1}:${GEOVIS_PORT:-8105}:80"
+    deploy:
+      resources:
+        limits: { cpus: "0.5", memory: 128M }
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  api:
+    build: ./api
+    container_name: geovis-api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      GEOVIS_DATA_DIR: /data
+      GEOVIS_STATIC_DATA: /static-data
+      GEOVIS_PUBLIC_URL: ${GEOVIS_PUBLIC_URL:-http://localhost:8105}
+      GEOVIS_RENDERER_URL: http://renderer:8200
+    volumes:
+      - ./api-data:/data
+      - ./web/dist/data:/static-data:ro
+    deploy:
+      resources:
+        limits: { cpus: "1.0", memory: 1G }
+
+  # PNG-снимки сцены (headless Chromium); наружу не публикуется — только через API
+  renderer:
+    build: ./renderer
+    container_name: geovis-renderer
+    restart: unless-stopped
+    environment:
+      GEOVIS_TARGET: http://geovis
+      MAX_PARALLEL: "2"
+    volumes:
+      - ./render-cache:/cache
+    shm_size: 512m
+    deploy:
+      resources:
+        limits: { cpus: "4.0", memory: 2G }

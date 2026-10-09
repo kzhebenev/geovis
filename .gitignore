@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+data/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+dist/
+web/public/data/
+web/e2e/shots*/
+api-data/
+render-cache/
+renderer/node_modules/
+api/app/VERSION
